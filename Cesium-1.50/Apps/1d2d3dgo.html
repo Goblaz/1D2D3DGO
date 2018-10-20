@@ -33,13 +33,18 @@
               outlineWidth : 1 // default: 0
           },
           id: name,
-          description: 'Year: ' + year + "<br />" + 'Mass: ' + mass + 'g'
+          description: 'Year: ' + year + "<br />" + 'Mass: ' + mass
       });
     }
 
     $.getJSON("../Data/meteorites.json", function(data) {
       data.forEach(function(met) {
-        addPoint(met.geolocation.coordinates[0], met.geolocation.coordinates[1], met.name, met.year, met.mass);
+        var mass = met.mass + " g";
+        if (met.mass >= 1000){
+          mass = met.mass + " kg"
+        }
+
+        addPoint(met.geolocation.coordinates[0], met.geolocation.coordinates[1], met.name, met.year, mass);
       });
       //"geolocation":{"type":"Point","coordinates":[10.15,45.26667]}
     });
