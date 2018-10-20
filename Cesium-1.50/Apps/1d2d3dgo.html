@@ -41,7 +41,8 @@
       data.forEach(function(met) {
         var mass = met.mass + " g";
         if (met.mass >= 1000){
-          mass = met.mass + " kg"
+          var newMass = met.mass / 1000;
+          mass = newMass + " kg"
         }
 
         addPoint(met.geolocation.coordinates[0], met.geolocation.coordinates[1], met.name, met.year, mass);
