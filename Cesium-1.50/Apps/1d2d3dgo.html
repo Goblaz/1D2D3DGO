@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-  <title>1D 2D 3D GO!</title>
+  <title>Hello World!</title>
   <script src="../Build/Cesium/Cesium.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <style>
@@ -20,71 +20,24 @@
 <body>
   <div id="cesiumContainer"></div>
   <script>
-    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwOGJlZDQyNC0yZTA3LTRjZDAtYTc5Mi1mMmU4NzQwZjBmM2UiLCJpZCI6NDE1NSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDA3MDQ3OX0.f5pClIcZSHiglL52gUdGIrBFIRpF3aqXDZIyW5NE0I8";
     var viewer = new Cesium.Viewer('cesiumContainer');
-    function addPoint(id, lat, lng, color) {
+    function addPoint(lat, lng) {
       viewer.entities.add({
           position : Cesium.Cartesian3.fromDegrees(lat, lng),
           point : {
-              id: id,
+              id: 1,
               show : true, // default
-              color : color, // default: WHITE
+              color : Cesium.Color.RED, // default: WHITE
               pixelSize : 10, // default: 1
               outlineColor : Cesium.Color.YELLOW, // default: BLACK
-              outlineWidth : 0 // default: 0
+              outlineWidth : 1 // default: 0
           }
       });
     }
 
-    $.getJSON("https://data.nasa.gov/resource/y77d-th95.json?$limit=50000", function(data) {
-      console.log(data);
-      const level10 = {red: 0.9, green: .02, blue: 0, alpha: 1};
-      const level9 = {red: 1, green: 0.5, blue: 0, alpha: 1};
-      const level8 = {red: 0.9, green: 0.8, blue: 0, alpha: 1};
-      const level7 = {red: 0.6, green: 0.85, blue: 0, alpha: 1};
-      const level6 = {red: .1, green: .8, blue: 0, alpha: 1};
-      const level5 = {red: 0, green: .8, blue: .3, alpha: 1};
-      const level4 = {red: 0, green: .7, blue: .6, alpha: 1};
-      const level3 = {red: 0, green: .6, blue: .75, alpha: 1};
-      const level2 = {red: 0, green: .3, blue: .8, alpha: 1};
-      const level1 = {red: .4, green: 0, blue: .8, alpha: 1};
-
+    $.getJSON("../Data/meteorites.json", function(data) {
       data.forEach(function(met) {
-        if(met.geolocation != undefined){
-          if (parseFloat(met.mass) == undefined) {
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], "#FFFFFF");
-          }
-          else if(parseFloat(met.mass) < 1.0) {
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level1);
-          }
-          else if (parseFloat(met.mass) < 5){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level2);
-          }
-          else if (parseFloat(met.mass) < 25){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level3);
-          }
-          else if (parseFloat(met.mass) < 100){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level4);
-          }
-          else if (parseFloat(met.mass) < 500){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level5);
-          }
-          else if (parseFloat(met.mass) < 2500){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level6);
-          }
-          else if (parseFloat(met.mass) < 10000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level7);
-          }
-          else if (parseFloat(met.mass) < 25000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level8);
-          }
-          else if (parseFloat(met.mass) < 100000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level9);
-          }
-          else{
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level10);
-          }
-        }
+        addPoint(met.geolocation.coordinates[0], met.geolocation.coordinates[1]);
       });
       //"geolocation":{"type":"Point","coordinates":[10.15,45.26667]}
     });
