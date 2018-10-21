@@ -91,7 +91,8 @@
                   color : "#FFFFFF", // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -109,7 +110,8 @@
                   color : level1, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -127,7 +129,8 @@
                   color : level2, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -145,7 +148,8 @@
                   color : level3, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -163,7 +167,8 @@
                   color : level4, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -181,7 +186,8 @@
                   color : level5, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -199,7 +205,8 @@
                   color : level6, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -217,7 +224,8 @@
                   color : level7, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -235,7 +243,8 @@
                   color : level8, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -253,7 +262,8 @@
                   color : level9, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
@@ -271,14 +281,15 @@
                   color : level10, // default: WHITE
                   pixelSize : 10, // default: 1
                   outlineColor : Cesium.Color.YELLOW, // default: BLACK
-                  outlineWidth : 0 // default: 0
+                  outlineWidth : 0, // default: 0,
+                  position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
                 },
                 position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
             };
           }
           metCZML.push(metCZMLItem);
           metCZML[0].clock.interval = '1492' + '-01-01T00:00:00.000Z/'+ '2149' + '-12-31T23:59:59.999Z';
-          metCZML[0].clock.currentTime = '2149' + '-12-31T23:59:59.999Z';
+          metCZML[0].clock.currentTime = new Date().getTime();
         }
       });
       console.log(metCZML)
