@@ -51,49 +51,237 @@
       const level2 = {red: 0, green: .3, blue: .8, alpha: 1};
       const level1 = {red: .4, green: 0, blue: .8, alpha: 1};
 
+      var metCZML = [
+        {
+          id: 'document',
+          name: 'MTBS',
+          version: "1.0",
+          clock: {
+            interval: '',
+            currentTime: '',
+            multiplier: 10518975,
+            range: 'LOOP_STOP',
+            step: 'SYSTEM_CLOCK_MULTIPLIER'
+          }
+        }
+      ];
+
       data.forEach(function(met) {
+        
         var mass = met.mass + " g"
         if (parseFloat(met.mass) >= 1000){
           var newMass = met.mass / 1000;
           mass = newMass + " kg"
         }
+        
+        var metCZMLItem;
+
         if(met.geolocation != undefined){
           
           if (parseFloat(met.mass) == undefined) {
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], "#FFFFFF", met.year, mass, met.name);
+              metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : "#FFFFFF", // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if(parseFloat(met.mass) < 1.0) {
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level1, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level1, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 5){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level2, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level2, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 25){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level3, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level3, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 100){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level4, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level4, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 500){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level5, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level5, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 2500){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level6, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level6, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 10000){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level7, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level7, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 25000){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level8, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level8, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else if (parseFloat(met.mass) < 100000){
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level9, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level9, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
           else{
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level10, met.year, mass, met.name);
+            metCZMLItem = {
+                id: met.name,
+                name: met.name,
+                description: 'Year: ' + met.year + "<br />" + 'Mass: ' + met.mass,
+                availability: met.year + '/' + '2149-10-31T00:00:00.000',
+                point: {
+                  id: met.id,
+                  show : true, // default
+                  color : level10, // default: WHITE
+                  pixelSize : 10, // default: 1
+                  outlineColor : Cesium.Color.YELLOW, // default: BLACK
+                  outlineWidth : 0 // default: 0
+                },
+                position : Cesium.Cartesian3.fromDegrees(met.geolocation.coordinates[0], met.geolocation.coordinates[1])
+            };
           }
+          metCZML.push(metCZMLItem);
+          metCZML[0].clock.interval = '1492' + '-01-01T00:00:00.000Z/'+ '2019' + '-12-31T23:59:59.999Z';
+          metCZML[0].clock.currentTime = '2019' + '-12-31T23:59:59.999Z';
         }
       });
+      //viewer.CzmlDataSource(CzmlDataSource.load(header));
       //"geolocation":{"type":"Point","coordinates":[10.15,45.26667]}
     });
 
