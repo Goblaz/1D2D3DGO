@@ -19,16 +19,49 @@
 </head>
 <body>
   <div style="height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
-    1D 2D 3D GO!
+    Global Meteorite Discovery Locations
   </div>
-  <div style="height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+  <div style="display: flex; justify-content: space-around; align-items: center; height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #000000; text-align: right; font-size: 18px; font-weight: bold;">
+    <div style="background-color: #EEEEEE; border-radius: 5px; padding: 5px;">
+      Mass:
+    </div>
+    <div style="background-color: #7F00BF; border-radius: 5px; padding: 5px;">
+      < 1 g
+    </div>
+    <div style="background-color: #1E00C3; border-radius: 5px; padding: 5px;">
+      < 5 g
+    </div>
+    <div style="background-color: #0048C7; border-radius: 5px; padding: 5px;">
+      < 25 g
+    </div>
+    <div style="background-color: #00B3CB; border-radius: 5px; padding: 5px;">
+      < 100 g
+    </div>
+    <div style="background-color: #00CF7D; border-radius: 5px; padding: 5px;">
+      < 500 g
+    </div>
+    <div style="background-color: #00D412; border-radius: 5px; padding: 5px;">
+      < 2.5 kg
+    </div>
+    <div style="background-color: #5CD800; border-radius: 5px; padding: 5px;">
+      < 10 kg
+    </div>
+    <div style="background-color: #D0DC00; border-radius: 5px; padding: 5px;">
+      < 25 kg
+    </div>
+    <div style="background-color: #E07900; border-radius: 5px; padding: 5px;">
+      < 100 kg
+    </div>
+    <div style="background-color: #E50500; border-radius: 5px; padding: 5px;">
+      > 100 kg
+    </div>
     <button onclick="dataDownload();">
       1D Download
     </button>
   </div>
-  <div id="cesiumContainer" style="height:90%;"></div>
-  <div style="height: 5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
-    Team: "The Team"
+  <div id="cesiumContainer" style="height:87.5%;"></div>
+  <div style="height: 7.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+    <a href="https://dev.socrata.com/foundry/data.nasa.gov/y77d-th95">Real-time NASA Meteorite Landing Dataset via Socrata</a>
   </div>
   <script>
     Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwOGJlZDQyNC0yZTA3LTRjZDAtYTc5Mi1mMmU4NzQwZjBmM2UiLCJpZCI6NDE1NSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDA3MDQ3OX0.f5pClIcZSHiglL52gUdGIrBFIRpF3aqXDZIyW5NE0I8";
@@ -138,7 +171,7 @@
       var csvFile = new Blob([ConvertToCSV(dataForDownload)], {type: contentType});
 
       var a = document.createElement('a');
-      a.download = 'my.csv';
+      a.download = 'meteorite_data.csv';
       a.href = window.URL.createObjectURL(csvFile);
       a.textContent = 'Download CSV';
 
@@ -147,7 +180,6 @@
       document.body.appendChild(a);
       a.click();
     }
-
   </script>
 </body>
 </html>
