@@ -18,11 +18,27 @@
   </style>
 </head>
 <body>
-  <div id="cesiumContainer"></div>
+  <div style="height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+    1D 2D 3D GO!
+  </div>
+  <div style="height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+    <button onclick="dataDownload();">
+      1D Download
+    </button>
+  </div>
+  <div id="cesiumContainer" style="height:90%;"></div>
+  <div style="height: 5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+    Team: "The Team"
+  </div>
   <script>
     Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwOGJlZDQyNC0yZTA3LTRjZDAtYTc5Mi1mMmU4NzQwZjBmM2UiLCJpZCI6NDE1NSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDA3MDQ3OX0.f5pClIcZSHiglL52gUdGIrBFIRpF3aqXDZIyW5NE0I8";
     var viewer = new Cesium.Viewer('cesiumContainer');
-    function addPoint(id, lat, lng, color) {
+    var iframe = document.getElementsByClassName('cesium-infoBox-iframe')[0];
+    iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals');
+    var dataForDownload;
+    function addPoint(id, lat, lng, color, year, mass, name, recclass) {
+      var dateFound = new Date(year)
+      var url = 'https://www.google.com/search?q=' + name + ' meteorite';
       viewer.entities.add({
           position : Cesium.Cartesian3.fromDegrees(lat, lng),
           point : {
@@ -32,12 +48,17 @@
               pixelSize : 10, // default: 1
               outlineColor : Cesium.Color.YELLOW, // default: BLACK
               outlineWidth : 0 // default: 0
-          }
+          },
+          id: name,
+          description: 'Date Discovered: ' + dateFound + "<br />" +
+          'Mass: ' + mass + '<br />' +
+          'Class: ' + recclass + '<br /><br />' +
+          '<button onclick="window.open(\'' + url + '\')">GO!</button>'
       });
     }
 
     $.getJSON("https://data.nasa.gov/resource/y77d-th95.json?$limit=50000", function(data) {
-      console.log(data);
+      dataForDownload = data;
       const level10 = {red: 0.9, green: .02, blue: 0, alpha: 1};
       const level9 = {red: 1, green: 0.5, blue: 0, alpha: 1};
       const level8 = {red: 0.9, green: 0.8, blue: 0, alpha: 1};
@@ -48,47 +69,84 @@
       const level3 = {red: 0, green: .6, blue: .75, alpha: 1};
       const level2 = {red: 0, green: .3, blue: .8, alpha: 1};
       const level1 = {red: .4, green: 0, blue: .8, alpha: 1};
-
+      console.log(data);
       data.forEach(function(met) {
+        var mass = met.mass + " g"
+        if (parseFloat(met.mass) >= 1000){
+          var newMass = met.mass / 1000;
+          mass = newMass + " kg"
+        }
         if(met.geolocation != undefined){
+
           if (parseFloat(met.mass) == undefined) {
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], "#FFFFFF");
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], "#FFFFFF", met.year, mass, met.name, met.recclass);
           }
           else if(parseFloat(met.mass) < 1.0) {
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level1);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level1, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 5){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level2);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level2, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 25){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level3);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level3, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 100){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level4);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level4, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 500){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level5);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level5, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 2500){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level6);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level6, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 10000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level7);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level7, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 25000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level8);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level8, met.year, mass, met.name, met.recclass);
           }
           else if (parseFloat(met.mass) < 100000){
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level9);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level9, met.year, mass, met.name, met.recclass);
           }
           else{
-            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level10);
+            addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], level10, met.year, mass, met.name, met.recclass);
           }
         }
       });
       //"geolocation":{"type":"Point","coordinates":[10.15,45.26667]}
     });
 
+    function ConvertToCSV(objArray) {
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      var str = "Method, ID,  Mass (g), Name, Name Type, Class, Latitude, Longitude, Date Found \r\n";
+
+      for (var i = 0; i < array.length; i++) {
+          var line = '';
+          for (var index in array[i]) {
+              if (line != '') line += ','
+              line += array[i][index];
+          }
+          str += line + '\r\n';
+      }
+      str = str.replace(/\[object Object\]/g,'');
+      return str.replace(/,,/g,',');
+  }
+
+    function dataDownload(){
+      var contentType = 'text/csv';
+
+      var csvFile = new Blob([ConvertToCSV(dataForDownload)], {type: contentType});
+
+      var a = document.createElement('a');
+      a.download = 'my.csv';
+      a.href = window.URL.createObjectURL(csvFile);
+      a.textContent = 'Download CSV';
+
+      a.dataset.downloadurl = [contentType, a.download, a.href].join(':');
+
+      document.body.appendChild(a);
+      a.click();
+    }
 
   </script>
 </body>
