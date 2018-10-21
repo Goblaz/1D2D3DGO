@@ -19,7 +19,7 @@
 </head>
 <body>
   <div style="height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
-    Global Meteorite Discovery Locations
+    IMPACT 3D
   </div>
   <div style="display: flex; justify-content: space-around; align-items: center; height: 2.5%; background-color: #111111; margin: 0px; padding: 5px; color: #000000; text-align: right; font-size: 18px; font-weight: bold;">
     <div style="background-color: #EEEEEE; border-radius: 5px; padding: 5px;">
@@ -55,13 +55,16 @@
     <div style="background-color: #E50500; border-radius: 5px; padding: 5px;">
       > 100 kg
     </div>
+    <button onclick="togglePopulation();">
+      Population Density
+    </button>
     <button onclick="dataDownload();">
       1D Download
     </button>
   </div>
   <div id="cesiumContainer" style="height:87.5%;"></div>
-  <div style="height: 7.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
-    <a href="https://dev.socrata.com/foundry/data.nasa.gov/y77d-th95">Real-time NASA Meteorite Landing Dataset via Socrata</a>
+  <div style="display: flex; justify-content: space-around; align-items: top; height: 7.5%; background-color: #111111; margin: 0px; padding: 5px; color: #EEEEEE; text-align: center; font-size: 24px; font-weight: bold;">
+    <a style="margin-top: 10px;"href="https://dev.socrata.com/foundry/data.nasa.gov/y77d-th95">Real-time NASA Meteorite Landing Dataset via Socrata</a>
   </div>
   <script>
     Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwOGJlZDQyNC0yZTA3LTRjZDAtYTc5Mi1mMmU4NzQwZjBmM2UiLCJpZCI6NDE1NSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDA3MDQ3OX0.f5pClIcZSHiglL52gUdGIrBFIRpF3aqXDZIyW5NE0I8";
@@ -85,11 +88,11 @@
 
         return new Date(Y,M,D);
     }
-    console.log(julianIntToDate(viewer.clock.currentTime.dayNumber));
 
     function addPoint(id, lat, lng, color, year, mass, name, recclass) {
       var dateFound = new Date(year)
       var url = 'https://www.google.com/search?q=' + name + ' meteorite';
+      var classurl = 'https://curator.jsc.nasa.gov/education/classification.cfm';
       viewer.entities.add({
           position : Cesium.Cartesian3.fromDegrees(lat, lng),
           point : {
@@ -104,10 +107,11 @@
           description: 'Date Discovered: ' + dateFound + "<br />" +
           'Mass: ' + mass + '<br />' +
           'Class: ' + recclass + '<br /><br />' +
-          '<button onclick="window.open(\'' + url + '\')">GO!</button>'
+          '<button onclick="window.open(\'' + url + '\')">GO!</button>&nbsp;&nbsp;' +
+          '<button onclick="window.open(\'' + classurl + '\')">Class Chart</button>'
       });
     }
-
+    //https://curator.jsc.nasa.gov/education/classification.cfm
     $.getJSON("https://data.nasa.gov/resource/y77d-th95.json?$limit=50000", function(data) {
       dataForDownload = data;
       const level10 = {red: 0.9, green: .02, blue: 0, alpha: 1};
@@ -120,7 +124,7 @@
       const level3 = {red: 0, green: .6, blue: .75, alpha: 1};
       const level2 = {red: 0, green: .3, blue: .8, alpha: 1};
       const level1 = {red: .4, green: 0, blue: .8, alpha: 1};
-      console.log(data);
+
       data.forEach(function(met) {
         var mass = met.mass + " g"
         if (parseFloat(met.mass) >= 1000){
@@ -128,7 +132,6 @@
           mass = newMass + " kg"
         }
         if(met.geolocation != undefined){
-
           if (parseFloat(met.mass) == undefined) {
             addPoint(met.id, met.geolocation.coordinates[0], met.geolocation.coordinates[1], "#FFFFFF", met.year, mass, met.name, met.recclass);
           }
@@ -167,13 +170,53 @@
       //"geolocation":{"type":"Point","coordinates":[10.15,45.26667]}
     });
 
+    // Create a clock that loops on Christmas day 2013 and runs in real-time.
+    var clock = new Cesium.Clock({
+       startTime : Cesium.JulianDate.fromIso8601("1400-12-25"),
+       stopTime : Cesium.JulianDate.fromIso8601("2050-10-21"),
+       clockStep : Cesium.ClockStep.SYSTEM_CLOCK_MULTIPLIER
+    });
+    viewer.clock  = clock;
+    viewer.timeline.updateFromClock();
+    viewer.timeline.resize();
+    viewer.timeline.zoomTo(clock.startTime, clock.stopTime);
+
+    //Add a WMS imagery layer
+    var imageryLayers = viewer.imageryLayers;
+    imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+        url : 'http://sedac.ciesin.columbia.edu/geoserver/wms',
+        layers : 'gpw-v3:gpw-v3-population-density_2000',
+        parameters : {
+            transparent : true,
+            format : 'image/png'
+        }
+    }));
+    viewer.imageryLayers._layers[1].show = false;
+
     viewer.useDefaultRenderLoop = false;
     function renderLoop() {
+      var dataArray = viewer.entities._entities._array;
+      var timeLineDate = julianIntToDate(viewer.clock.currentTime.dayNumber);
+      if(dataArray.length > 0) {
+        dataArray.forEach(function(point, i) {
+          discDate = new Date(point._description._value.substring(17, 41));
+          if (discDate <= timeLineDate){
+            point._show = true;
+          }
+          else {
+            point._show = false;
+          }
+        })
+      }
       viewer.resize();
       viewer.render();
       Cesium.requestAnimationFrame(renderLoop);
     }
     Cesium.requestAnimationFrame(renderLoop);
+
+    function togglePopulation(){
+      viewer.imageryLayers._layers[1].show = !viewer.imageryLayers._layers[1].show;
+    }
 
     function ConvertToCSV(objArray) {
       var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
